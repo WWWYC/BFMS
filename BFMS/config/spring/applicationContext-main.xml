@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	   http://www.springframework.org/schema/aop
+	   http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+	   http://www.springframework.org/schema/context
+	   http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	   http://www.springframework.org/schema/tx
+	   http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	   http://www.springframework.org/schema/cache 
+	   http://www.springframework.org/schema/cache/spring-cache-4.0.xsd">
+
+	<!-- 加载配置文件 -->
+	<context:property-placeholder location="classpath:jdbc/jdbc.properties"/>
+
+	<!-- 扫描注解 -->
+	<context:component-scan base-package="cn.bf">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+	<!-- 配置SQLSessionFactory -->
+	<bean id="sqlSessionFactory" name="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"> 
+		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml" /> 
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath*:cn/bf/mappers/*Mapper.xml" />
+		<!-- <property name="mapperLocations">
+            <list>
+                <value>classpath:cn.bf.mappers/*Mapper.xml</value>
+            </list>
+        </property> -->
+		<!-- <property name="typeAliasesPackage"  value="cn.bf.po" /> -->
+	</bean>
+
+
+	<!-- 自动扫描所有的mapper文件 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="cn.bf.mappers,cn.bf.dao" />
+		<!-- <property name="markerInterface" value="com.automation.common.dao.SuperMapper" /> -->
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+<!-- 		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property> -->
+	</bean>
+	
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<!-- 设定最大空闲时间（毫秒） -->
+		<property name="maxIdle" value="31536000" />
+		<!-- 设定最大等待时间（毫秒） -->
+		<property name="maxWait" value="31536000"/>
+<!-- 		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+		<property name="url" value="jdbc:mysql:///pioneer_01TPC0"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value="root"></property> -->
+
+
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+
+
+	<!-- 配置超类 -->
+	<bean class="cn.bf.util.SuperClass">
+		<property name="logger" ref="logger" />
+	</bean>
+	
+	<!-- 日志类 -->
+	<bean id="logger" class="cn.bf.util.Log" />
+
+
+</beans>

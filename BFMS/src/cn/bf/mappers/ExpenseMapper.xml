@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bf.dao.ExpenseMapper" >
+  <resultMap id="BaseResultMap" type="cn.bf.po.Expense" >
+    <id column="uuid" property="uuid" jdbcType="VARCHAR" />
+    <result column="stuId" property="stuid" jdbcType="VARCHAR" />
+    <result column="expenseSt" property="expensest" jdbcType="REAL" />
+    <result column="expenseNd" property="expensend" jdbcType="REAL" />
+    <result column="expenseRd" property="expenserd" jdbcType="REAL" />
+    <result column="expenseTh" property="expenseth" jdbcType="REAL" />
+    <result column="rebate" property="rebate" jdbcType="REAL" />
+    <result column="payDateSt" property="paydatest" jdbcType="DATE" />
+    <result column="payDateNd" property="paydatend" jdbcType="DATE" />
+    <result column="payDateRd" property="paydaterd" jdbcType="DATE" />
+    <result column="payDateTh" property="paydateth" jdbcType="DATE" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="createUser" property="createuser" jdbcType="VARCHAR" />
+    <result column="createDate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="updateUser" property="updateuser" jdbcType="VARCHAR" />
+    <result column="updateDate" property="updatedate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    uuid, stuId, expenseSt, expenseNd, expenseRd, expenseTh, rebate, payDateSt, 
+    payDateNd, payDateRd, payDateTh, comment, createUser, createDate, updateUser, updateDate
+  </sql>
+
+
+	<sql id="insertColumn">
+		#{uuid},
+		#{stuId},
+		#{manageExp},
+		#{trainExp},
+		#{lawyerExp},
+		#{qualifiedExp},
+		#{expenseSt},
+		#{expenseNd},
+		#{expenseRd},
+		#{expenseTh},
+		#{debt},
+		#{rebate},
+		#{payDateSt},
+		#{payDateNd},
+		#{payDateRd},
+		#{payDateTh},
+		#{comment},
+		#{createUser},
+		#{createDate},
+		#{updateUser},
+		#{updateDate}
+	</sql>
+
+	<sql id="updateColumn">
+		<set>
+			<if test="manageExp == null">
+				manageExp = 0,
+			</if>
+			<if test="trainExp == null">
+				trainExp = 0,
+			</if>
+			<if test="lawyerExp == null">
+				lawyerExp = 0,
+			</if>
+			<if test="qualifiedExp == null">
+				qualifiedExp = 0,
+			</if>
+			<if test="expenseSt == null">
+				expenseSt = 0,
+			</if>
+			<if test="expenseNd == null">
+				expenseNd = 0,
+			</if>
+			<if test="expenseRd == null">
+				expenseRd = 0,
+			</if>
+			<if test="expenseTh == null">
+				expenseTh = 0,
+			</if>
+			
+			<if test="manageExp != null">
+				manageExp = #{manageExp},
+			</if>
+			<if test="trainExp != null">
+				trainExp = #{trainExp},
+			</if>
+			<if test="lawyerExp != null">
+				lawyerExp = #{lawyerExp},
+			</if>
+			<if test="qualifiedExp != null">
+				qualifiedExp = #{qualifiedExp},
+			</if>
+			<if test="expenseSt != null">
+				expenseSt = #{expenseSt},
+			</if>
+			<if test="expenseNd != null">
+				expenseNd = #{expenseNd},
+			</if>
+			<if test="expenseRd != null">
+				expenseRd = #{expenseRd},
+			</if>
+			<if test="expenseTh != null">
+				expenseTh = #{expenseTh},
+			</if>
+			payDateNd = #{payDateNd},
+			payDateRd = #{payDateRd},
+			payDateTh = #{payDateTh},
+			payDateSt = #{payDateSt},
+			<!-- 
+			<if test="payDateNd != null">
+				payDateNd = #{payDateNd},
+			</if>
+			<if test="payDateRd != null">
+				payDateRd = #{payDateRd},
+			</if>
+			<if test="payDateTh != null">
+				payDateTh = #{payDateTh},
+			</if>
+			<if test="payDateSt != null">
+				payDateSt = #{payDateSt},
+			</if>
+			 -->
+			<if test="comment != null">
+				comment = #{comment},
+			</if>
+			<if test="updateUser != null">
+				updateUser = #{updateUser},
+			</if>
+			<if test="updateDate != null">
+				updateDate = #{updateDate},
+			</if>
+		</set>
+		<!-- <set>
+			<if test="manageExp != null">
+				manageExp = #{manageExp},
+			</if>
+			<if test="trainExp != null">
+				trainExp = #{trainExp},
+			</if>
+			<if test="lawyerExp != null">
+				lawyerExp = #{lawyerExp},
+			</if>
+			<if test="qualifiedExp != null">
+				qualifiedExp = #{qualifiedExp},
+			</if>
+			<if test="expenseSt != null">
+				expenseSt = #{expenseSt},
+			</if>
+			<if test="expenseNd != null">
+				expenseNd = #{expenseNd},
+			</if>
+			<if test="expenseRd != null">
+				expenseRd = #{expenseRd},
+			</if>
+			<if test="expenseTh != null">
+				expenseTh = #{expenseTh},
+			</if>
+			<if test="payDateNd != null">
+				payDateNd = #{payDateNd},
+			</if>
+			<if test="payDateRd != null">
+				payDateRd = #{payDateRd},
+			</if>
+			<if test="payDateTh != null">
+				payDateTh = #{payDateTh},
+			</if>
+			<if test="payDateSt != null">
+				payDateSt = #{payDateSt},
+			</if>
+			<if test="comment != null">
+				comment = #{comment},
+			</if>
+			<if test="updateUser != null">
+				updateUser = #{updateUser},
+			</if>
+			<if test="updateDate != null">
+				updateDate = #{updateDate},
+			</if>
+		</set> -->
+	</sql>
+	
+	<!-- 根据主键删除费用信息 -->
+	<select id="deleteExpenseByUuid" parameterType="cn.bf.po.Expense">
+		delete from expense where uuid = #{uuid}
+	</select>
+	
+	<!-- 根据主键修改费用信息 -->
+	<select id="updateExpenseByUuid" parameterType="cn.bf.po.Expense">
+		update expense
+		<include refid="updateColumn" />
+		where uuid = #{uuid}
+	</select>
+
+	<!-- 插入一条费用记录 -->
+	<select id="insertExpense" parameterType="cn.bf.po.Expense">
+		insert into expense values(
+			<include refid="insertColumn" />
+		)
+	</select>
+
+	<!-- 根据主键查询费用信息 -->
+	<select id="selectExpenseByUuid" parameterType="cn.bf.po.Expense" resultType="cn.bf.po.Expense">
+		select * from expense where uuid = #{uuid}
+	</select>
+
+	<!-- 查询全部费用信息 -->
+	<select id="selectAllExpense" resultType="cn.bf.po.Expense">
+		select * from expense;
+	</select>
+
+	<!-- 根据条件查询费用信息 -->
+	<select id="selectExpenseByCriteria" parameterType="java.util.Map" resultType="cn.bf.po.Expense">
+		select * from expense e, student s
+		<where>
+			<choose>
+				<when test="companyId != null and companyId != ''">
+					e.stuId in (
+						select ss.stuId from student ss
+						where ss.companyId = #{companyId}
+					)
+				</when>
+				<when test="(companyId == null or companyId == '') and (groupId != null and groupId != '')">
+					e.stuId in (
+						select ss.stuId from student ss
+						where ss.companyId in (
+							select c.companyId from company c
+							where c.groupId = #{groupId}
+						)
+					)
+				</when>
+			</choose>
+			and s.stuId = e.stuId
+		</where>
+		
+		order by s.stuNum
+		limit #{page}, #{rows}
+	</select>
+
+	<!-- 根据条件查询费用信息数量 -->
+	<select id="selectExpenseCountByCriteria" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(uuid) from expense e, student s
+		<where>
+			<choose>
+				<when test="companyId != null and companyId != ''">
+					e.stuId in (
+						select ss.stuId from student ss
+						where ss.companyId = #{companyId}
+					)
+				</when>
+				<when test="(companyId == null or companyId == '') and (groupId != null and groupId != '')">
+					e.stuId in (
+						select ss.stuId from student ss
+						where ss.companyId in (
+							select c.companyId from company c
+							where c.groupId = #{groupId}
+						)
+					)
+				</when>
+			</choose>
+			and s.stuId = e.stuId
+		</where>
+		
+		order by s.stuNum
+		limit #{page}, #{rows}
+	</select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from expense
+    where uuid = #{uuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from expense
+    where uuid = #{uuid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.bf.po.Expense" >
+    insert into expense (uuid, stuId, expenseSt, 
+      expenseNd, expenseRd, expenseTh, 
+      rebate, payDateSt, 
+      payDateNd, payDateRd, payDateTh, 
+      comment, createUser, createDate, 
+      updateUser, updateDate)
+    values (#{uuid,jdbcType=VARCHAR}, #{stuid,jdbcType=VARCHAR}, #{expensest,jdbcType=REAL}, 
+      #{expensend,jdbcType=REAL}, #{expenserd,jdbcType=REAL}, #{expenseth,jdbcType=REAL}, 
+      #{rebate,jdbcType=REAL},  #{paydatest,jdbcType=DATE}, 
+      #{paydatend,jdbcType=DATE}, #{paydaterd,jdbcType=DATE}, #{paydateth,jdbcType=DATE}, 
+      #{comment,jdbcType=VARCHAR}, #{createuser,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, 
+      #{updateuser,jdbcType=VARCHAR}, #{updatedate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.bf.po.Expense" >
+    insert into expense
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uuid != null" >
+        uuid,
+      </if>
+      <if test="stuid != null" >
+        stuId,
+      </if>
+      <if test="expensest != null" >
+        expenseSt,
+      </if>
+      <if test="expensend != null" >
+        expenseNd,
+      </if>
+      <if test="expenserd != null" >
+        expenseRd,
+      </if>
+      <if test="expenseth != null" >
+        expenseTh,
+      </if>
+      <if test="rebate != null" >
+        rebate,
+      </if>
+      <if test="paydatest != null" >
+        payDateSt,
+      </if>
+      <if test="paydatend != null" >
+        payDateNd,
+      </if>
+      <if test="paydaterd != null" >
+        payDateRd,
+      </if>
+      <if test="paydateth != null" >
+        payDateTh,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+      <if test="createuser != null" >
+        createUser,
+      </if>
+      <if test="createdate != null" >
+        createDate,
+      </if>
+      <if test="updateuser != null" >
+        updateUser,
+      </if>
+      <if test="updatedate != null" >
+        updateDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uuid != null" >
+        #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="stuid != null" >
+        #{stuid,jdbcType=VARCHAR},
+      </if>
+      <if test="expensest != null" >
+        #{expensest,jdbcType=REAL},
+      </if>
+      <if test="expensend != null" >
+        #{expensend,jdbcType=REAL},
+      </if>
+      <if test="expenserd != null" >
+        #{expenserd,jdbcType=REAL},
+      </if>
+      <if test="expenseth != null" >
+        #{expenseth,jdbcType=REAL},
+      </if>
+      <if test="rebate != null" >
+        #{rebate,jdbcType=REAL},
+      </if>
+      <if test="paydatend != null" >
+        #{paydatend,jdbcType=DATE},
+      </if>
+      <if test="paydaterd != null" >
+        #{paydaterd,jdbcType=DATE},
+      </if>
+      <if test="paydateth != null" >
+        #{paydateth,jdbcType=DATE},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="createuser != null" >
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateuser != null" >
+        #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedate != null" >
+        #{updatedate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.bf.po.Expense" >
+    update expense
+    <set >
+      <if test="stuid != null" >
+        stuId = #{stuid,jdbcType=VARCHAR},
+      </if>
+      <if test="expensest != null" >
+        expenseSt = #{expensest,jdbcType=REAL},
+      </if>
+      <if test="expensend != null" >
+        expenseNd = #{expensend,jdbcType=REAL},
+      </if>
+      <if test="expenserd != null" >
+        expenseRd = #{expenserd,jdbcType=REAL},
+      </if>
+      <if test="expenseth != null" >
+        expenseTh = #{expenseth,jdbcType=REAL},
+      </if>
+      <if test="rebate != null" >
+        rebate = #{rebate,jdbcType=REAL},
+      </if>
+      <if test="paydatend != null" >
+        payDateNd = #{paydatend,jdbcType=DATE},
+      </if>
+      <if test="paydaterd != null" >
+        payDateRd = #{paydaterd,jdbcType=DATE},
+      </if>
+      <if test="paydateth != null" >
+        payDateTh = #{paydateth,jdbcType=DATE},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="createuser != null" >
+        createUser = #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null" >
+        createDate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateuser != null" >
+        updateUser = #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedate != null" >
+        updateDate = #{updatedate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where uuid = #{uuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.bf.po.Expense" >
+    update expense
+    set stuId = #{stuid,jdbcType=VARCHAR},
+      expenseSt = #{expensest,jdbcType=REAL},
+      expenseNd = #{expensend,jdbcType=REAL},
+      expenseRd = #{expenserd,jdbcType=REAL},
+      expenseTh = #{expenseth,jdbcType=REAL},
+      rebate = #{rebate,jdbcType=REAL},
+      payDateSt = #{paydatest,jdbcType=DATE},
+      payDateNd = #{paydatend,jdbcType=DATE},
+      payDateRd = #{paydaterd,jdbcType=DATE},
+      payDateTh = #{paydateth,jdbcType=DATE},
+      comment = #{comment,jdbcType=VARCHAR},
+      createUser = #{createuser,jdbcType=VARCHAR},
+      createDate = #{createdate,jdbcType=TIMESTAMP},
+      updateUser = #{updateuser,jdbcType=VARCHAR},
+      updateDate = #{updatedate,jdbcType=TIMESTAMP}
+    where uuid = #{uuid,jdbcType=VARCHAR}
+  </update>
+</mapper>
