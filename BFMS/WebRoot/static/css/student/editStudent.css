@@ -1,9 +1,0 @@
-#data_table td {
-	width: 220px;
-	/* width: 16.66%; */
-	height: 40px;
-}
-
-#data_table td>input[type=date] {
-	width: 199px;
-}
