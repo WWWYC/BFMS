@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bf.dao.CompanyMapper" >
+  <resultMap id="BaseResultMap" type="cn.bf.po.Company" >
+    <id column="companyId" property="companyid" jdbcType="VARCHAR" />
+    <result column="companyNum" property="companynum" jdbcType="VARCHAR" />
+    <result column="companyName" property="companyname" jdbcType="VARCHAR" />
+    <result column="groupId" property="groupId" jdbcType="VARCHAR" />
+    <result column="companyContacts" property="companycontacts" jdbcType="VARCHAR" />
+    <result column="companyAddress" property="companyaddress" jdbcType="VARCHAR" />
+    <result column="companyPhone" property="companyphone" jdbcType="VARCHAR" />
+    <result column="companyEmail" property="companyemail" jdbcType="VARCHAR" />
+    <result column="companyFax" property="companyfax" jdbcType="VARCHAR" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="createUser" property="createuser" jdbcType="VARCHAR" />
+    <result column="createDate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="updateUser" property="updateuser" jdbcType="VARCHAR" />
+    <result column="updateDate" property="updatedate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    companyId, companyNum, companyName, companyContacts, companyAddress, companyPhone, 
+    companyEmail, companyFax, comment, createUser, createDate, updateUser, updateDate
+  </sql>
+  
+	<sql id="updateColumn">
+		<set>
+			<if test="groupId != null and groupId != ''">
+				groupId = #{groupId},
+			</if>
+			<if test="companyName != null and companyName != ''">
+				companyName = #{companyName},
+			</if>
+			<if test="companyContacts != null">
+				companyContacts = #{companyContacts},
+			</if>
+			<if test="companyAddress != null">
+				companyAddress = #{companyAddress},
+			</if>
+			<if test="companyPhone != null">
+				companyPhone = #{companyPhone},
+			</if>
+			<if test="companyEmail != null">
+				companyEmail = #{companyEmail},
+			</if>
+			<if test="companyFax != null">
+				companyFax = #{companyFax},
+			</if>
+			<if test="comment != null">
+				comment = #{comment},
+			</if>
+			<if test="updateUser != null">
+				updateUser = #{updateUser},
+			</if>
+			<if test="updateDate != null">
+				updateDate = #{updateDate},
+			</if>
+		</set>
+	</sql>
+
+	<sql id="insertColumn">
+		#{companyId},
+		#{companyNum},
+		#{groupId},
+		#{companyName},
+		#{companyContacts},
+		#{companyAddress},
+		#{companyPhone},
+		#{companyEmail},
+		#{companyFax},
+		#{comment},
+		#{createUser},
+		#{createDate},
+		#{updateUser},
+		#{updateDate}
+	</sql>
+	
+	<!-- 根据企业主键删除企业信息 -->
+	<select id="deleteCompanyByCompanyId" parameterType="cn.bf.po.Company">
+		delete from company where companyId = #{companyId}
+	</select>
+	
+	<!-- 根据主键更新企业信息 -->
+	<select id="updateCompanyByCompanyId" parameterType="cn.bf.po.Company">
+		update company
+		<include refid="updateColumn" />
+		where companyId = #{companyId}
+	</select>
+	
+	<!-- 多条件查询企业，并实现分页 -->
+	<select id="findCompanyByCriteria" parameterType="java.util.Map" resultType="cn.bf.po.Company">
+		select * from company c left join `group` g 
+		on c.groupId = g.groupId order by companyNum
+		limit #{page}, #{rows}
+	</select>
+	<!-- <select id="findCompanyByCriteria" parameterType="java.util.Map" resultType="cn.bf.po.Company">
+		select * from company c, `group` g
+		<where>
+			c.groupId = g.groupId
+			<if test="groupId != null and groupId != ''">
+				g.groupId = #{groupId}
+			</if>
+		</where>
+		order by companyNum
+		limit #{page}, #{rows}
+	</select> -->
+	
+	<!-- 根据主键查询单个企业 -->
+	<select id="selectCompanyByCompanyId" parameterType="java.lang.String" resultType="cn.bf.po.Company">
+		select * from company where companyId = #{companyId}
+	</select>
+	
+	<!--根据组合ID获取企业列表 -->
+	<select id="selectCompanyListByGroupId" parameterType="java.lang.String" resultType="cn.bf.po.Company">
+		select * from company
+		where groupId = #{groupId}
+		order by companyNum
+	</select>
+
+	<!-- 添加企业 -->
+	<select id="insertCompany" parameterType="cn.bf.po.Company">
+		insert into company values(
+			<include refid="insertColumn"></include>
+		)
+	</select>
+	
+	<!-- 查询最大的企业编号 -->
+	<select id="selectMaxCompanyNum" resultType="java.lang.Integer">
+		select max(companyNum) from company
+	</select>
+  
+	<!-- 查询企业数量 -->
+	<select id="selectCount" resultType="java.lang.Integer">
+		select count(companyId) from company
+	</select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from company
+    where companyId = #{companyid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from company
+    where companyId = #{companyid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.bf.po.Company" >
+    insert into company (companyId, companyNum, companyName, 
+      companyContacts, companyAddress, companyPhone, 
+      companyEmail, companyFax, comment, 
+      createUser, createDate, updateUser, 
+      updateDate)
+    values (#{companyid,jdbcType=VARCHAR}, #{companynum,jdbcType=VARCHAR}, #{companyname,jdbcType=VARCHAR}, 
+      #{companycontacts,jdbcType=VARCHAR}, #{companyaddress,jdbcType=VARCHAR}, #{companyphone,jdbcType=VARCHAR}, 
+      #{companyemail,jdbcType=VARCHAR}, #{companyfax,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}, 
+      #{createuser,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, #{updateuser,jdbcType=VARCHAR}, 
+      #{updatedate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.bf.po.Company" >
+    insert into company
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="companyid != null" >
+        companyId,
+      </if>
+      <if test="companynum != null" >
+        companyNum,
+      </if>
+      <if test="companyname != null" >
+        companyName,
+      </if>
+      <if test="companycontacts != null" >
+        companyContacts,
+      </if>
+      <if test="companyaddress != null" >
+        companyAddress,
+      </if>
+      <if test="companyphone != null" >
+        companyPhone,
+      </if>
+      <if test="companyemail != null" >
+        companyEmail,
+      </if>
+      <if test="companyfax != null" >
+        companyFax,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+      <if test="createuser != null" >
+        createUser,
+      </if>
+      <if test="createdate != null" >
+        createDate,
+      </if>
+      <if test="updateuser != null" >
+        updateUser,
+      </if>
+      <if test="updatedate != null" >
+        updateDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="companyid != null" >
+        #{companyid,jdbcType=VARCHAR},
+      </if>
+      <if test="companynum != null" >
+        #{companynum,jdbcType=VARCHAR},
+      </if>
+      <if test="companyname != null" >
+        #{companyname,jdbcType=VARCHAR},
+      </if>
+      <if test="companycontacts != null" >
+        #{companycontacts,jdbcType=VARCHAR},
+      </if>
+      <if test="companyaddress != null" >
+        #{companyaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="companyphone != null" >
+        #{companyphone,jdbcType=VARCHAR},
+      </if>
+      <if test="companyemail != null" >
+        #{companyemail,jdbcType=VARCHAR},
+      </if>
+      <if test="companyfax != null" >
+        #{companyfax,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="createuser != null" >
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateuser != null" >
+        #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedate != null" >
+        #{updatedate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.bf.po.Company" >
+    update company
+    <set >
+      <if test="companynum != null" >
+        companyNum = #{companynum,jdbcType=VARCHAR},
+      </if>
+      <if test="companyname != null" >
+        companyName = #{companyname,jdbcType=VARCHAR},
+      </if>
+      <if test="companycontacts != null" >
+        companyContacts = #{companycontacts,jdbcType=VARCHAR},
+      </if>
+      <if test="companyaddress != null" >
+        companyAddress = #{companyaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="companyphone != null" >
+        companyPhone = #{companyphone,jdbcType=VARCHAR},
+      </if>
+      <if test="companyemail != null" >
+        companyEmail = #{companyemail,jdbcType=VARCHAR},
+      </if>
+      <if test="companyfax != null" >
+        companyFax = #{companyfax,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="createuser != null" >
+        createUser = #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null" >
+        createDate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateuser != null" >
+        updateUser = #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedate != null" >
+        updateDate = #{updatedate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where companyId = #{companyid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.bf.po.Company" >
+    update company
+    set companyNum = #{companynum,jdbcType=VARCHAR},
+      companyName = #{companyname,jdbcType=VARCHAR},
+      companyContacts = #{companycontacts,jdbcType=VARCHAR},
+      companyAddress = #{companyaddress,jdbcType=VARCHAR},
+      companyPhone = #{companyphone,jdbcType=VARCHAR},
+      companyEmail = #{companyemail,jdbcType=VARCHAR},
+      companyFax = #{companyfax,jdbcType=VARCHAR},
+      comment = #{comment,jdbcType=VARCHAR},
+      createUser = #{createuser,jdbcType=VARCHAR},
+      createDate = #{createdate,jdbcType=TIMESTAMP},
+      updateUser = #{updateuser,jdbcType=VARCHAR},
+      updateDate = #{updatedate,jdbcType=TIMESTAMP}
+    where companyId = #{companyid,jdbcType=VARCHAR}
+  </update>
+</mapper>

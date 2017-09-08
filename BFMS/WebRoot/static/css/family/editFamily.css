@@ -1,0 +1,27 @@
+table>thead>tr>th {
+	text-align: center;
+}
+
+#data_table>tbody>tr>td {
+	width : 184px;
+}
+
+#data_table>tbody>tr>td>input {
+	width : 184px;
+}
+
+#data_table>tbody>tr>td>a {
+	width: 100%;
+}
+
+.buttons {
+	text-align: center;
+	margin-top: 20px;
+}
+
+.buttons>button {
+	width: 300px;
+	height: 50px;
+	font-size: 28px;
+}
+

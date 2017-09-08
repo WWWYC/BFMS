@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bf.dao.SysPermissionMapper" >
+  <resultMap id="BaseResultMap" type="cn.bf.po.SysPermission" >
+    <id column="SysPermissionId" property="sysPermissionId" jdbcType="VARCHAR" />
+    <id column="SysPermissionId" property="id" jdbcType="VARCHAR" />
+    <result column="parentId" property="parentId" jdbcType="VARCHAR" />
+    <result column="perLevel" property="perLevel" jdbcType="INTEGER" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="permission" property="permission" jdbcType="VARCHAR" />
+    <result column="text" property="text" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="menuIcon" property="menuIcon" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="createUser" property="createUser" jdbcType="VARCHAR" />
+    <result column="createDate" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="updateUser" property="updateUser" jdbcType="VARCHAR" />
+    <result column="updateDate" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    SysPermissionId, parentId, perLevel, perPath, permission, text, menuState, menuIcon, 
+    status, comment, createUser, createDate, updateUser, updateDate
+  </sql>
+  
+	<!-- 根据菜单ID查询子级菜单 -->
+	<select id="findMenuListBySysMenuId" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select * from syspermission
+		where sysPermissionId in (
+			select sysPermissionId from sysrolepermission
+			where sysRoleId in (
+				select sysRoleId from sysuserrole
+				where sysUserId = #{sysUserId}
+			)
+		)
+		and perLevel = '4'
+		and parentId = #{id}
+		order by sortId
+	</select>
+ 
+	<!-- 根据UserID查询菜单 -->
+	<select id="findMenuListBySysUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select * from syspermission
+		where sysPermissionId in (
+			select sysPermissionId from sysrolepermission
+			where sysRoleId in (
+				select sysRoleId from sysuserrole
+				where sysUserId = #{sysUserId}
+			)
+		) and perLevel = '3'
+		and status = '0'
+		order by sortId
+	</select>
+	
+	<!-- 根据UserID查询权限 -->
+	<select id="findPermissionListBySysUserId" parameterType="java.lang.String" resultType="cn.bf.po.SysPermission" >
+		select * from syspermission
+		where sysPermissionId in (
+			select sysPermissionId from sysrolepermission
+			where sysRoleId in (
+				select sysRoleId from sysuserrole
+				where sysUserId = #{sysUserId}
+			)
+		)
+	</select>
+
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SysPermission
+    where SysPermissionId = #{SysPermissionid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SysPermission
+    where SysPermissionId = #{SysPermissionid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.bf.po.SysPermission" >
+    insert into SysPermission (SysPermissionId, parentId, perLevel, 
+      perPath, permission, text, 
+      menuState, menuIcon, status, 
+      comment, createUser, createDate, 
+      updateUser, updateDate)
+    values (#{SysPermissionid,jdbcType=VARCHAR}, #{parentid,jdbcType=VARCHAR}, #{perlevel,jdbcType=INTEGER}, 
+      #{perpath,jdbcType=VARCHAR}, #{permission,jdbcType=VARCHAR}, #{text,jdbcType=VARCHAR}, 
+      #{menustate,jdbcType=VARCHAR}, #{menuicon,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{comment,jdbcType=VARCHAR}, #{createuser,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, 
+      #{updateuser,jdbcType=VARCHAR}, #{updatedate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.bf.po.SysPermission" >
+    insert into SysPermission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="SysPermissionid != null" >
+        SysPermissionId,
+      </if>
+      <if test="parentid != null" >
+        parentId,
+      </if>
+      <if test="perlevel != null" >
+        perLevel,
+      </if>
+      <if test="perpath != null" >
+        perPath,
+      </if>
+      <if test="permission != null" >
+        permission,
+      </if>
+      <if test="text != null" >
+        text,
+      </if>
+      <if test="menustate != null" >
+        menuState,
+      </if>
+      <if test="menuicon != null" >
+        menuIcon,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+      <if test="createuser != null" >
+        createUser,
+      </if>
+      <if test="createdate != null" >
+        createDate,
+      </if>
+      <if test="updateuser != null" >
+        updateUser,
+      </if>
+      <if test="updatedate != null" >
+        updateDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="SysPermissionid != null" >
+        #{SysPermissionid,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        #{parentid,jdbcType=VARCHAR},
+      </if>
+      <if test="perlevel != null" >
+        #{perlevel,jdbcType=INTEGER},
+      </if>
+      <if test="perpath != null" >
+        #{perpath,jdbcType=VARCHAR},
+      </if>
+      <if test="permission != null" >
+        #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="text != null" >
+        #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="menustate != null" >
+        #{menustate,jdbcType=VARCHAR},
+      </if>
+      <if test="menuicon != null" >
+        #{menuicon,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="createuser != null" >
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateuser != null" >
+        #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedate != null" >
+        #{updatedate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.bf.po.SysPermission" >
+    update SysPermission
+    <set >
+      <if test="parentid != null" >
+        parentId = #{parentid,jdbcType=VARCHAR},
+      </if>
+      <if test="perlevel != null" >
+        perLevel = #{perlevel,jdbcType=INTEGER},
+      </if>
+      <if test="perpath != null" >
+        perPath = #{perpath,jdbcType=VARCHAR},
+      </if>
+      <if test="permission != null" >
+        permission = #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="text != null" >
+        text = #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="menustate != null" >
+        menuState = #{menustate,jdbcType=VARCHAR},
+      </if>
+      <if test="menuicon != null" >
+        menuIcon = #{menuicon,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="createuser != null" >
+        createUser = #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null" >
+        createDate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateuser != null" >
+        updateUser = #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedate != null" >
+        updateDate = #{updatedate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where SysPermissionId = #{SysPermissionid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.bf.po.SysPermission" >
+    update SysPermission
+    set parentId = #{parentid,jdbcType=VARCHAR},
+      perLevel = #{perlevel,jdbcType=INTEGER},
+      perPath = #{perpath,jdbcType=VARCHAR},
+      permission = #{permission,jdbcType=VARCHAR},
+      text = #{text,jdbcType=VARCHAR},
+      menuState = #{menustate,jdbcType=VARCHAR},
+      menuIcon = #{menuicon,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      comment = #{comment,jdbcType=VARCHAR},
+      createUser = #{createuser,jdbcType=VARCHAR},
+      createDate = #{createdate,jdbcType=TIMESTAMP},
+      updateUser = #{updateuser,jdbcType=VARCHAR},
+      updateDate = #{updatedate,jdbcType=TIMESTAMP}
+    where SysPermissionId = #{SysPermissionid,jdbcType=VARCHAR}
+  </update>
+</mapper>

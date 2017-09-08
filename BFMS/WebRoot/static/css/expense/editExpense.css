@@ -1,0 +1,18 @@
+#data_table {
+	/* width: 720px; */
+	margin-bottom: 30px;
+}
+
+#data_table td {
+	width: 220px;
+	height: 40px;
+}
+
+#data_table td>input[type=date] {
+	width: 199px;
+}
+
+#data_form {
+	/* width: 702px; */
+	/* margin: 30px auto; */
+}
