@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bf.dao.SysUserRoleMapper" >
+  <resultMap id="BaseResultMap" type="cn.bf.po.SysUserRole" >
+    <id column="uuid" property="uuid" jdbcType="VARCHAR" />
+    <result column="sysUserId" property="sysuserid" jdbcType="VARCHAR" />
+    <result column="sysRoleId" property="sysroleid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    uuid, sysUserId, sysRoleId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SysUserRole
+    where uuid = #{uuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SysUserRole
+    where uuid = #{uuid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.bf.po.SysUserRole" >
+    insert into SysUserRole (uuid, sysUserId, sysRoleId
+      )
+    values (#{uuid,jdbcType=VARCHAR}, #{sysuserid,jdbcType=VARCHAR}, #{sysroleid,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.bf.po.SysUserRole" >
+    insert into SysUserRole
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uuid != null" >
+        uuid,
+      </if>
+      <if test="sysuserid != null" >
+        sysUserId,
+      </if>
+      <if test="sysroleid != null" >
+        sysRoleId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uuid != null" >
+        #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="sysuserid != null" >
+        #{sysuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="sysroleid != null" >
+        #{sysroleid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.bf.po.SysUserRole" >
+    update SysUserRole
+    <set >
+      <if test="sysuserid != null" >
+        sysUserId = #{sysuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="sysroleid != null" >
+        sysRoleId = #{sysroleid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where uuid = #{uuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.bf.po.SysUserRole" >
+    update SysUserRole
+    set sysUserId = #{sysuserid,jdbcType=VARCHAR},
+      sysRoleId = #{sysroleid,jdbcType=VARCHAR}
+    where uuid = #{uuid,jdbcType=VARCHAR}
+  </update>
+</mapper>
